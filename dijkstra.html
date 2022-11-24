@@ -69,16 +69,16 @@
             </div>
             <div><label for="source">Source Node:</label>
                 <select id="source" onchange="draw()">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="H">H</option>
-                    <option value="I">I</option>
-                    <option value="J">J</option>
+                    <option value="A">Node A</option>
+                    <option value="B">Node B</option>
+                    <option value="C">Node C</option>
+                    <option value="D">Node D</option>
+                    <option value="E">Node E</option>
+                    <option value="F">Node F</option>
+                    <option value="G">Node G</option>
+                    <option value="H">Node H</option>
+                    <option value="I">Node I</option>
+                    <option value="J">Node J</option>
                 </select>
             </div>
         </div>
@@ -140,7 +140,14 @@
                     {
                         selector: 'node',
                         style: {
-                            'background-color': '#CCC',
+                            'background-color': function (element) {
+                                const data = element.data();
+                                if (data.label == source) {
+                                    return 'teal';
+                                } else {
+                                    return '#CCC';
+                                }
+                            },
                             'label': function (element) {
                                 const data = element.data();
                                 return `${data.label} (${data.distance.toFixed(1)})`;
@@ -149,7 +156,14 @@
                             'text-halign': 'center',
                             'font-size': '14px',
                             'font-weight': 'bold',
-                            'color': 'black'
+                            'color': function (element) {
+                                const data = element.data();
+                                if (data.label == source) {
+                                    return 'white';
+                                } else {
+                                    return 'black';
+                                }
+                            }
                         }
                     },
 
