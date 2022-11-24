@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <title>Original Graph</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+    <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.min.js"></script>
+    
+    <script src="before.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        body * {
+            box-sizing: border-box;
+        }
+
+        header {
+            height: 10vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: solid 1px #CCC;
+            background-color: #F4F4F4;
+            padding: 0 30px;
+        }
+
+        main {
+            min-height: 90vh;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        select {
+            padding: 10px;
+        }
+
+        #cy {
+            width: 100%;
+            height: 90vh;
+        }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Original Graph</h1>
+    </header>
+    <main>
+      <div id="cy"></div>
+    </main>
+
+    <script>
+       
+        function draw() {
+            var cy = window.cy = cytoscape({
+
+            	  container: document.getElementById('cy'),
+
+            	  elements: graphData,
+
+            	  layout: {
+            	    name: 'preset'
+            	  },
+            	  
+            	  ready: function () {
+                      this.nodes().forEach(function (node) {
+                          let size = 100;
+                          node.css("width", size);
+                          node.css("height", size);
+                      });
+                  },
+
+            	  // so we can see the ids
+            	  style: [
+            		  {
+                          selector: 'node',
+                          style: {
+                              'background-color': '#CCC',
+                              'label': function (element) {
+                                  const data = element.data();
+                                  return `${data.label} (${data.distance.toFixed(1)})`;
+                              },
+                              'text-valign': 'center',
+                              'text-halign': 'center',
+                              'font-size': '14px',
+                              'font-weight': 'bold',
+                              'color': 'black'
+                          }
+                      },
+
+                      {
+                          selector: 'edge',
+                          style: {
+                              'width': function (element) {
+                                  const data = element.data();
+                                  return '10px';
+                                  //return (data.inTree) ? 3 * Math.log(data.weight + 1) + "px" : '6px';
+                              },
+  							'label': function (element) {
+                                  const data = element.data();
+                                  /* return (data.weight > 1) ? data.weight : null; */
+                                  return data.weight.toFixed(1);
+                              },
+                              'target-arrow-shape': function (element) {
+                                  const data = element.data();
+                                  return 'triangle';
+                                  //return (data.inTree) ? 'triangle' : 'none';
+                              },
+                              'line-color':function (element) {
+                                  const data = element.data();
+                                  return (data.inTree) ? 'teal' : '#CCC';
+                              },
+                              'line-style': function (element) {
+                                  const data = element.data();
+                                  return (data.inTree) ? 'solid' : 'dotted';
+                              },
+                              'text-background-color': 'white',
+                              'text-background-opacity': 1,
+                              'text-background-padding': '5px',
+                              'text-border-width': '1px',
+                              'text-border-color': 'black',
+                              'text-border-style': 'solid',
+                              'target-arrow-color': function (element) {
+                                  const data = element.data();
+                                  return (data.inTree) ? 'teal' : '#CCC';
+                              },
+                              'curve-style': 'bezier',
+                              'font-size': '14px',
+                          }
+                      }
+                ]
+
+            	});
+        }
+
+        draw();
+    </script>
+
+  </body>
+
+</html>
