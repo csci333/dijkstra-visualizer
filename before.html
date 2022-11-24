@@ -10,8 +10,6 @@
     <script src="https://unpkg.com/cose-base/cose-base.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.min.js"></script>
     
-    <script src="before.js"></script>
-
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -63,7 +61,12 @@
 
     <script>
        
-        function draw() {
+        async function draw() {
+
+            let jsonFile = `js/original.json`;
+            const graphData = await fetch(jsonFile).then(response => response.json());
+            
+
             var cy = window.cy = cytoscape({
 
             	  container: document.getElementById('cy'),
@@ -114,7 +117,7 @@
                                   const data = element.data();
                                   return (data.inTree) ? 'teal' : '#CCC';
                               },
-                              'line-style': 'solid',
+                              'line-style': 'dotted',
                               'target-arrow-color': '#CCC',
                               'curve-style': 'bezier',
                               'font-size': '14px',
